@@ -73,6 +73,8 @@ var readFileToArray = function(name) {
 	
 };
 
-app.listen(1337, "127.0.0.1", function() {
+var port = process.env.PORT || 1337;
+
+app.listen(port, "127.0.0.1", function() {
 	console.log("Server is listening! \nGo to localhost:1337");
 });
