@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Rancid Tomatoes</title>
+
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="movies.css" />
+		<link rel="shortcut icon" type="image/png" href="res/rotten.gif"/>
+
+	</head>
+
+	<body>
+		<div class="banner">
+			<img src="res/banner.png" alt="Rancid Tomatoes" />
+		</div>
+
+		<?php 
+			$movie = htmlspecialchars($_GET["film"]);
+
+			//Create variables from info.txt
+			$file_array = file("{$movie}/info.txt");
+			$title = trim($file_array[0]);
+			$year = trim($file_array[1]);
+			$rating = trim($file_array[2]);
+
+			//Create map for overview area
+			$file_array = file("{$movie}/overview.txt");
+			$overview = array();
+			foreach($file_array as $value) {
+				$arr = explode(":", $value);
+				$overview[trim($arr[0])] = trim($arr[1]);
+			}
+
+			//Create list of reviews
+			$review_files = glob("{$movie}/review*.txt");
+		?>
+
+		<h1><?=$title?> (<?=$year?>)</h1>
+
+		<div class="overall-content-area">
+		
+			<div class="right-section">
+				<div>
+					<img src="<?=$movie;?>/overview.png" alt="general overview" />
+				</div>
+
+				<dl>
+					<?php foreach ($overview as $key => $value) { ?>
+						
+						<dt>
+							<?=$key?>
+						</dt>
+						<dd>
+							<?=$value?>
+						</dd>
+						
+					<?php }?>
+				</dl>
+			</div>
+
+			<div class="left-section">
+
+				<div class="left-header">
+					<?php
+						$rating_image = ($rating < 60) ? "rottenbig.png" : "freshbig.png";
+					?>
+					<img src="res/<?=$rating_image?>" alt="<?=substr($rating_image, 0, strlen($rating_image)-4)?>" />
+					<?=$rating?>
+				</div>
+				
+				<div class="reviews">
+
+					<?php
+						$current_review = 0;
+						for ($current_review; $current_review < count($review_files); $current_review++) {
+							$review = array_map('trim', file($review_files[$current_review]));
+							$review_image = ($review[1] === "FRESH") ? "fresh.gif" : "rotten.gif";
+					?>
+						<p>
+							<img src="res/<?=$review_image?>" alt="<?=substr($review_image, 0, strlen($review_image)-4)?>"/>
+							<q><?=$review[0]?></q>
+						</p>
+						<p>
+							<img src="res/critic.gif" alt="Critic" />
+							<?=$review[2]?> <br />
+							<?=$review[3]?>
+						</p>	
+					
+					<?php if ($current_review === (int) ((count($review_files)-1)/2)) { ?>
+						</div> <div class="reviews">
+					<?php }} ?>
+				</div>
+			</div>
+
+			<div class="review-counter">
+				<p>(1-<?=count($review_files)?>) of <?=count($review_files)?></p>
+			</div>
+		</div>
+
+		<div class="validators">
+			<a href="https://webster.cs.washington.edu/validate-html.php"><img src="http://webster.cs.washington.edu/w3c-html.png" alt="Valid HTML5" /></a> <br />
+			<a href="https://webster.cs.washington.edu/validate-css.php"><img src="http://webster.cs.washington.edu/w3c-css.png" alt="Valid CSS" /></a>
+		</div>
+	</body>
+</html>

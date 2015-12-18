@@ -1,0 +1,46 @@
+doctype html
+html(lang="en")
+	head
+		title= "Rancid Tomatoes"
+		meta(charset="UTF-8")/
+		link(rel="stylesheet", href="movies.css")/
+		link(rel="shortcut icon", type="image/png", href="res/rotten.gif")/
+	body
+		.banner
+			img(src="res/banner.png", alt="Rancid Tomatoes")/
+		
+		h1 #{movie.title} (#{movie.year})
+		
+		.overall-content-area
+			.right-section
+				div
+					img(src= "movies/#{movie.name}/overview.png" alt="general overview")/
+				dl
+					each val, key in movie.overview
+						dt= key
+						dd!= val
+			.left-section
+				.left-header
+					- var ratingImage = movie.rating < 60 ? "rottenbig.png" : "freshbig.png"
+					img(src="res/#{ratingImage}", alt=ratingImage.substring(0, ratingImage.length-7))/
+					=movie.rating
+				.reviews
+					-var currentReview = 0
+					each review in movie.reviews
+						- currentReview += 1
+						- var reviewImage = review[1] === "FRESH" ? "fresh.gif" : "rotten.gif"
+						p
+							img(src="res/#{reviewImage}", alt=ratingImage.substring(0, ratingImage.length-4))/
+							q #{review[0]}
+						p
+							img(src="res/critic.gif" alt="Critic")/
+							=review[2]
+							br/
+							=review[3]
+						if (currentReview === parseInt(((movie.reviews.length)+1)/2))
+							</div><div class="reviews">
+			.review-counter
+				p (1-#{movie.reviews.length}) of #{movie.reviews.length}
+		.validators
+			a(href="https://webster.cs.washington.edu/validate-html.php"): img(src="http://webster.cs.washington.edu/w3c-html.png", alt="Valid HTML5")/
+			a(href="https://webster.cs.washington.edu/validate-css.php"): img(src="http://webster.cs.washington.edu/w3c-css.png", alt="Valid CSS")/
