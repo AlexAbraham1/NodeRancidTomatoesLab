@@ -9,6 +9,7 @@ var app = express();
 app.use(express.static('public'));
 
 app.set('view engine', 'jade');
+app.locals.pretty = true;
 
 app.get("/movie", function(req, res) {
 	var data = {};
