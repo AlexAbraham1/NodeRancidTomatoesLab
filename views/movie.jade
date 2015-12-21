@@ -23,7 +23,7 @@ html(lang="en")
 				.left-header
 					- var ratingImage = movie.rating < 60 ? "rottenbig.png" : "freshbig.png"
 					img(src="res/#{ratingImage}", alt=ratingImage.substring(0, ratingImage.length-7))/
-					=movie.rating
+					="\n"+movie.rating
 				.reviews
 					-var currentReview = 0
 					each review in movie.reviews
@@ -43,4 +43,5 @@ html(lang="en")
 				p (1-#{movie.reviews.length}) of #{movie.reviews.length}
 		.validators
 			a(href="https://webster.cs.washington.edu/validate-html.php"): img(src="http://webster.cs.washington.edu/w3c-html.png", alt="Valid HTML5")/
+			="\n"
 			a(href="https://webster.cs.washington.edu/validate-css.php"): img(src="http://webster.cs.washington.edu/w3c-css.png", alt="Valid CSS")/
